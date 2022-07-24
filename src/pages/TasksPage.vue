@@ -6,9 +6,9 @@
         Task list
       </q-item-label>
 
-      <div class="q-ma-lg" v-if="isMounting">
+      <div class="q-ma-md" v-if="isMounting">
         <div class="flex q-mb-md" v-for="n in 5" :key="n">
-          <q-skeleton type="QCheckbox" size="24px" class="q-pa-md q-mr-sm" />
+          <q-skeleton type="QCheckbox" class="q-mr-sm" />
           <q-skeleton type="text" :size="`${n * 3.8}%`" class="q-pa-sm" />
         </div>
       </div>
@@ -37,7 +37,7 @@ export default defineComponent({
       isMounting.value = true
       try {
         const res = await api.get('tasks')
-        taskItems.value = res.data
+        taskItems.value = res.data.tasks
         isMounting.value = false
       } catch (e) {
         console.error(e.message)
@@ -48,13 +48,13 @@ export default defineComponent({
       isMounting,
       taskItems,
       async updateStatus (event) {
-        const newStatus = event.$event
+        const isDone = event.$event
         const taskId = event.id
 
         try {
-          await api.post(`tasks/${taskId}`, { newStatus })
+          await api.patch(`tasks/${taskId}`, { isDone })
           let task = this.taskItems.find(t => t.id === taskId)
-          task.isDone = newStatus
+          task.isDone = isDone
         } catch (e) {
           console.error(e.message)
         }
