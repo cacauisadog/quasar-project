@@ -1,7 +1,8 @@
 <template>
   <q-item>
     <q-item-section>
-      <q-checkbox :model-value="isDone" @update:model-value="$emit('updateStatus', { $event, id })" :label="text" />
+      <q-checkbox dense :model-value="isDone" @update:model-value="$emit('updateStatus', { $event, id })"
+        :label="text" />
     </q-item-section>
   </q-item>
 </template>
@@ -13,7 +14,7 @@ export default defineComponent({
   name: 'TaskItem',
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true
     },
     isDone: {
